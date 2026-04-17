@@ -1,4 +1,4 @@
-# sql-bolt-solutions
+# SQL-Bolts-solutions
 This repository contains my structured solutions to SQLBolt exercises, demonstrating strong fundamentals in SQL including querying, filtering, joins, aggregations, and database operations.  Focused on writing clean, readable queries and building a solid foundation for real-world data analytics tasks.
 
 This repository contains my solutions to SQLBolt exercises, covering:
