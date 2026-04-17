@@ -1,0 +1,302 @@
+/* 1. Find the title of each film */
+-- Approach: Select only the title column from movies table
+SELECT title FROM movies;
+
+
+/* 2. Find the director of each film */
+-- Approach: Select director column
+SELECT director FROM movies;
+
+
+/* 3. Find the title and director of each film */
+-- Approach: Select multiple columns
+SELECT title, director FROM movies;
+
+
+/* 4. Find the title and year of each film */
+-- Approach: Select required columns
+SELECT title, year FROM movies;
+
+
+/* 5. Find all information about each film */
+-- Approach: Use * to fetch all columns
+SELECT * FROM movies;
+
+
+/* 6. Find the movie with id = 6 */
+-- Approach: Filter using WHERE
+SELECT * FROM movies WHERE id = 6;
+
+
+/* 7. Movies released between 2000 and 2010 */
+-- Approach: Use BETWEEN
+SELECT * FROM movies WHERE year BETWEEN 2000 AND 2010;
+
+
+/* 8. Movies NOT released between 2000 and 2010 */
+-- Approach: Use NOT BETWEEN
+SELECT * FROM movies WHERE year NOT BETWEEN 2000 AND 2010;
+
+
+/* 9. First 5 Pixar movies */
+-- Approach: LIMIT results
+SELECT * FROM movies LIMIT 5;
+
+
+/* 10. Find all Toy Story movies */
+-- Approach: Use LIKE for pattern matching
+SELECT title, director FROM movies WHERE title LIKE '%Toy Story%';
+
+
+/* 11. Movies directed by John Lasseter */
+-- Approach: Filter using WHERE
+SELECT * FROM movies WHERE director = 'John Lasseter';
+
+
+/* 12. Movies NOT directed by John Lasseter */
+-- Approach: Use != operator
+SELECT * FROM movies WHERE director != 'John Lasseter';
+
+
+/* 13. Find WALL-* movies */
+-- Approach: Pattern matching with LIKE
+SELECT title, director FROM movies WHERE title LIKE '%WALL_%';
+
+
+/* 14. List all directors alphabetically without duplicates */
+-- Approach: DISTINCT + ORDER BY
+SELECT DISTINCT director FROM movies ORDER BY director ASC;
+
+
+/* 15. Last 4 movies (most recent first) */
+-- Approach: ORDER BY DESC + LIMIT
+SELECT title FROM movies ORDER BY year DESC LIMIT 4;
+
+
+/* 16. First 5 movies alphabetically */
+-- Approach: ORDER BY ASC
+SELECT title FROM movies ORDER BY title LIMIT 5;
+
+
+/* 17. Next 5 movies alphabetically */
+-- Approach: OFFSET
+SELECT title FROM movies ORDER BY title LIMIT 5 OFFSET 5;
+
+
+/* 18. Canadian cities and population */
+-- Approach: Filter by country
+SELECT city, population 
+FROM north_american_cities 
+WHERE country = 'Canada';
+
+
+/* 19. US cities ordered north to south */
+-- Approach: ORDER BY latitude DESC
+SELECT city, latitude 
+FROM north_american_cities 
+WHERE country = 'United States' 
+ORDER BY latitude DESC;
+
+
+/* 20. Cities west of Chicago */
+-- Approach: Longitude filter + sort
+SELECT city, longitude 
+FROM north_american_cities 
+WHERE longitude < -87.6 
+ORDER BY longitude ASC;
+
+
+/* 21. Top 2 largest cities in Mexico */
+-- Approach: ORDER BY population DESC
+SELECT city, population 
+FROM north_american_cities 
+WHERE country = 'Mexico' 
+ORDER BY population DESC 
+LIMIT 2;
+
+
+/* 22. 3rd & 4th largest US cities */
+-- Approach: LIMIT + OFFSET
+SELECT city, population 
+FROM north_american_cities 
+WHERE country = 'United States' 
+ORDER BY population DESC 
+LIMIT 2 OFFSET 2;
+
+
+/* 23. Domestic & international sales */
+-- Approach: JOIN movies + boxoffice
+SELECT m.title, b.domestic_sales, b.international_sales
+FROM movies m
+JOIN boxoffice b
+ON m.id = b.movie_id;
+
+
+/* 24. Movies with higher international sales */
+-- Approach: JOIN + condition
+SELECT m.title, b.domestic_sales, b.international_sales
+FROM movies m
+JOIN boxoffice b
+ON m.id = b.movie_id
+WHERE b.international_sales > b.domestic_sales;
+
+
+/* 25. Movies ordered by rating */
+-- Approach: JOIN + ORDER BY
+SELECT m.title
+FROM movies m
+JOIN boxoffice b
+ON m.id = b.movie_id
+ORDER BY b.rating DESC;
+
+
+/* 26. Buildings with employees */
+-- Approach: JOIN + DISTINCT
+SELECT DISTINCT building
+FROM employees
+JOIN buildings
+ON buildings.building_name = employees.building;
+
+
+/* 27. Buildings and capacity */
+-- Approach: Simple SELECT
+SELECT building_name, capacity FROM buildings;
+
+
+/* 28. Buildings and roles (including empty) */
+-- Approach: LEFT JOIN
+SELECT DISTINCT building_name, role
+FROM buildings
+LEFT JOIN employees
+ON buildings.building_name = employees.building;
+
+
+/* 29. Employees without building */
+-- Approach: WHERE IS NULL
+SELECT name, role
+FROM employees
+WHERE building IS NULL;
+
+
+/* 30. Buildings with no employees */
+-- Approach: LEFT JOIN + NULL filter
+SELECT building_name
+FROM buildings
+LEFT JOIN employees
+ON building_name = building
+WHERE building IS NULL;
+
+
+/* 31. Total sales in millions */
+-- Approach: SUM + calculation
+SELECT 
+    m.title,
+    ROUND((b.domestic_sales + b.international_sales)/1000000, 2)
+FROM movies m
+JOIN boxoffice b
+ON m.id = b.movie_id;
+
+
+/* 32. Ratings in percent */
+-- Approach: Multiply rating
+SELECT 
+    m.title,
+    (b.rating * 10) AS rating_percent
+FROM movies m
+JOIN boxoffice b
+ON m.id = b.movie_id;
+
+
+/* 33. Movies in even years */
+-- Approach: MOD operator
+SELECT title FROM movies WHERE year % 2 = 0;
+
+
+/* 34. Longest employee tenure */
+-- Approach: MAX
+SELECT MAX(years_employed) FROM employees;
+
+
+/* 35. Average years by role */
+-- Approach: GROUP BY
+SELECT role, AVG(years_employed)
+FROM employees
+GROUP BY role;
+
+
+/* 36. Count artists */
+-- Approach: COUNT with condition
+SELECT COUNT(*) FROM employees WHERE role = 'Artist';
+
+
+/* 37. Employees count by role */
+-- Approach: GROUP BY
+SELECT role, COUNT(*)
+FROM employees
+GROUP BY role;
+
+
+/* 38. Total engineer years */
+-- Approach: SUM
+SELECT SUM(years_employed)
+FROM employees
+WHERE role = 'Engineer';
+
+
+/* 39. Movies per director */
+-- Approach: GROUP BY
+SELECT director, COUNT(title)
+FROM movies
+GROUP BY director;
+
+
+/* 40. Sales per director */
+-- Approach: JOIN + SUM
+SELECT director, SUM(domestic_sales + international_sales)
+FROM movies
+JOIN boxoffice
+ON movies.id = boxoffice.movie_id
+GROUP BY director;
+
+
+/* 41. Insert Toy Story 4 */
+-- Approach: INSERT
+INSERT INTO movies (id, title, director, year, length_minutes)
+VALUES (15, 'Toy Story 4', 'John Lasseter', 2017, 110);
+
+
+/* 42. Update director */
+-- Approach: UPDATE
+UPDATE movies
+SET director = 'John Lasseter'
+WHERE title = 'A Bug''s Life';
+
+
+/* 43. Delete old movies */
+-- Approach: DELETE
+DELETE FROM movies WHERE year < 2005;
+
+
+/* 44. Create table */
+-- Approach: CREATE TABLE
+CREATE TABLE Database (
+    id INTEGER PRIMARY KEY,
+    Name TEXT,
+    Version FLOAT,
+    Download_count INTEGER
+);
+
+
+/* 45. Add column */
+-- Approach: ALTER TABLE
+ALTER TABLE movies ADD Aspect_ratio FLOAT;
+
+
+/* 46. Add language column */
+-- Approach: ALTER TABLE with default
+ALTER TABLE movies ADD Language TEXT DEFAULT 'English';
+
+
+/* 47. Drop movies table */
+-- Approach: DROP TABLE
+DROP TABLE IF EXISTS movies;
